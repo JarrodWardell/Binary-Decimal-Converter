@@ -1,0 +1,96 @@
+--Binary Converter 1.0 - LUA
+--Jarrod Wardell
+--Converts decimal numbers into binary and vice versa
+
+
+function toBinary(value) --Decimal to Binary
+  out = "" --Where the string will be concatenated to
+
+  a = 1 --Allows a count up for the size of the digit
+  b = true
+  while b do --Run until we know how many bits will be needed
+    if math.floor(value / a) > 1 then
+    --print("true")
+      a = a * 2
+    else
+    --print("false")
+      b = False --Break the loop
+    end
+  end
+  --print(a, b)
+
+  while a >= 1 do --Run until you've run through all the bits
+    if value - a >= 0 then
+      out = out .. "1" --It adds in
+      value = value - a --Remove what's been counted
+    else
+      out = out .. "0" --It doesn't add in
+    end
+    a = math.floor(a / 2) --Move to the next (smaller) bit
+  end
+
+  return out --Output
+end
+
+function fromBinary(input) --Binary to Decimal
+  a = 1
+  b = 1
+  out = 0
+  loop = true
+  while loop do
+    if (input % (a * 10)) - a >= 0 then
+      input = input - a
+      out = out + b
+      a = a * 10 --Move to the next bit
+      b = b * 2 --Move to the next power of 2
+    else
+      if (input / (a * 10)) >= 1 then
+        a = a * 10 --Move to the next bit
+        b = b * 2 --Move to the next power of 2
+      else
+        break
+      end
+    end
+  end
+  return out
+end
+
+while 1 == 1 do --While true do, loop program
+  print("Binary/Decimal Converter")
+  print("v2 - LUA  Jarrod Wardell")
+  print()
+  print("If you'd like to convert from decimal to binary, click 2.")
+  print("If you'd like to convert from binary to decimal, click 0.")
+  print("If you'd like to quit, click 6.")
+
+  input = tonumber(io.read()) --input
+  print()
+
+  if input == 2 then
+    print("Enter a decimal number.")
+    input = tonumber(io.read())
+    print()
+    print("Output:")
+    local err, out = pcall(toBinary, input) --Protected call for error handling
+    print(out)
+    if not err then print() print("Check that you entered an integer, not a string!") end
+  elseif input == 0 then
+    print("Enter a binary number.")
+    input = tonumber(io.read())
+    print()
+    print("Output:")
+    local err, out = pcall(fromBinary, input) --Protected call for error handling
+    print(out)
+    if not err then print() print("Check that you entered an integer, not a string!") end
+  elseif input == 6 then
+    print("Good bye.")
+    break --Breaks the loop, ending the LUA script
+  else
+    print("That's not an option.")
+  end
+  print()
+  print("Press enter to continue.")
+  --os.pullEvent("key")
+  input = io.read()
+  os.execute("clear") --Clear Screen
+end
