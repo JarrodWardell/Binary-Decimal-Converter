@@ -1,0 +1,77 @@
+#A simple program allowing for conversion between binary and decimal numbers.
+#Based off the LUA program of the same purpose written by myself.
+#Created October 10, 2019 ~ Jarrod Wardell
+import os
+
+def toBinary(to) :
+        a = 1
+        b = True
+        inp = to
+        out = ""
+        while b : #Used for setting how many bits will be needed
+                if to // a > 1 :#See if it needs another bit
+                        a = a * 2 #Next power of 2
+                else :
+                        b = False #Exit loop
+        while a >= 1 : #Keeps going until there's nothing left
+                if inp - a >= 0 : #If it can be subtracted from the input
+                        out = out + "1" #Add to the output
+                        inp = inp - a #Remove a from the number we're working with
+                else :
+                        out = out + "0" #Add to the output
+                a = a // 2
+        return out #Return the input in binary form
+
+def fromBinary(to) :
+        a = 1
+        b = 1
+        convert = to
+        out = 0
+        loop = True
+        while loop : #
+                if (convert % (a * 10)) - a >= 0 : #If a can fit into the binary number + be positive
+                        convert = convert - a
+                        out = out + b
+                        a = a * 10 #Next bit
+                        b = b * 2 #Next bit
+                elif (convert / (a * 10)) >= 1 : #Solves the issue of the program ending once it finds a 0 bit
+                        a = a * 10 #Next bit
+                        b = b * 2 #Next bit
+                else :
+                        break
+        return out
+
+#Menu
+
+print("Should the console be cleared for easy viewing?")
+print("1 for yes, 0 for no.")
+doClear = 7 #Garbage number to keep loop going until valid answer is given
+while not (doClear == 1 or doClear == 0) :
+        doClear = int(input())
+doLoop = True #Allows for breaking out of program
+while doLoop :
+        if doClear == 1 :
+                os.system('clear') #Clear screen
+        print("Python Decimal/Binary Converter v2")
+        print("October 10th, 2019 ~ Jarrod Wardell")
+        print()
+        print("Type 1 to convert from binary to decimal.")
+        print("Type 0 to convert from decimal to binary.")
+        print("Type 6 to exit.")
+        menuChoice = int(input()) #Menu Choice
+        if menuChoice == 1 :
+                print("Input:")
+                convertNum = int(input()) #Get input
+                print("Output:")
+                print(fromBinary(convertNum)) #Run function and output answer
+        elif menuChoice == 0 :
+                print("Input:")
+                convertNum = int(input()) #Get input
+                print("Output:")
+                print(toBinary(convertNum)) #Run function and output return value
+        elif menuChoice == 6 :
+                doLoop = False #Break loop
+        if doLoop : #No need to hit enter if you've exited the program
+                print("Hit enter to continue.")
+                garbageData = input() #Useless data just used to pause the program
+print("Loop end.") #Program exited
